@@ -1,0 +1,30 @@
+.manager-page {
+    padding: 20px 0;
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+    }
+    .managers-container {
+        background-color: $main-bgc;
+    }
+    .manager-edit {
+        margin: 10px;
+        input {
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.4em;
+            &:not(:focus) {
+                background: transparent;
+                border: 0;
+            }
+        }
+        button {
+            font-size: 1em;
+            padding: 5px 10px;
+        }
+        .buttons {
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+    }
+}

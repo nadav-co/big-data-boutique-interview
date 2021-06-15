@@ -1,0 +1,65 @@
+// flex helpers
+.flex {
+    display: flex;
+    > *.full {
+        flex: 1;
+    }
+    &.wrap {
+        flex-wrap: wrap;
+    }
+    &.col {
+        flex-direction: column;
+    }
+    &.justify-center {
+        justify-content: center;
+    }
+    &.align-center {
+        align-items: center;
+    }
+    &.align-end {
+        align-items: flex-end;
+    }
+    &.align-start {
+        align-items: flex-start;
+    }
+    &.center {
+        align-items: center;
+        justify-content: center;
+    }
+    &.space-bt {
+        justify-content: space-between;
+    }
+}
+
+//grid helpers
+.grid {
+    display: grid;
+}
+
+.clean-btn {
+    border: 0;
+    background: transparent;
+    width: max-content;
+    text-align: start;
+    margin: 0;
+}
+
+.nice-btn {
+    border: 0;
+    border-radius: 2em;
+    background-color: $clr1;
+    color: whitesmoke;
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 1.3em;
+    &:hover {
+        background-color: $clr3;
+        transform: scale(1.05);
+    }
+    &.cancel {
+        background-color: $dark-bgc;
+        &:hover {
+            background-color: $clr1;
+        }
+    }
+}

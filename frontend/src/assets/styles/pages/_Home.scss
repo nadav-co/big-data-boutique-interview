@@ -1,0 +1,19 @@
+.home {
+    h1 {
+        text-align: center;
+        margin: 20px 0 40px;
+        font-size: 2.5em;
+    }
+    .room-preview {
+        padding: 30px;
+        margin: 20px auto;
+        max-width: 500px;
+        background-color: $main-bgc;
+        @media (min-width: 500px) {
+            border-radius: 15px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+    }
+}
