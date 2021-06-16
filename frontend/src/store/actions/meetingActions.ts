@@ -17,7 +17,7 @@ export function getMeetings(date: string) {
 export function setMeetingToEdit(id: string) {
   return async (dispatch: any) => {
     try {
-      const meetingToEdit = await meetingService.getById(id) //no need if we have sockets
+      const meetingToEdit = await meetingService.getMeetingById(id) //no need if we have sockets
       dispatch({ type: 'SET_MEETING_TO_EDIT', meetingToEdit })
       return meetingToEdit
     }
@@ -37,8 +37,8 @@ export function saveMeeting(newMeeting: Meeting) {
         meeting = await meetingService.addMeeting(newMeeting)
         dispatch({ type: 'ADD_MEETING', meeting })
       }
-      const occupations = await meetingService.getOccupations(new Date(meeting.startDate).getFullYear())
-      
+      const occupations = await meetingService.getOccupations(new Date(meeting.startDate).toLocaleDateString())
+
       dispatch({ type: 'SET_OCCUPATIONS', occupations })
       return meeting
     }
@@ -49,10 +49,10 @@ export function saveMeeting(newMeeting: Meeting) {
   }
 }
 
-export function getOccupations(year: string | number) {
+export function getOccupations(date: string) {
   return async (dispatch: any) => {
     try {
-      const occupations = await meetingService.getOccupations(year)
+      const occupations = await meetingService.getOccupations(date)
       dispatch({ type: 'SET_OCCUPATIONS', occupations })
       return occupations
     }

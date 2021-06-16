@@ -4,21 +4,12 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import path from 'path'
-import expressSession from 'express-session'
 
 
 const app = express()
 const http = require('http').createServer(app)
 
-const session = expressSession({
-    secret: 'coding is amazing',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-})
-
 app.use(bodyParser.json())
-app.use(session)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
@@ -31,12 +22,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const meetingRoutes = require('./api/meeting/meeting.routes')
-const occupationRoutes = require('./api/occupation/occupation.routes')
 const manager = require('./api/manager/manager.routes')
 
 
 app.use('/api/meeting', meetingRoutes)
-app.use('/api/occupation', occupationRoutes)
 app.use('/api/manager', manager)
 
 

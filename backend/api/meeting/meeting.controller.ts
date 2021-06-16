@@ -10,6 +10,15 @@ async function getMeetings(req: Request, res: Response) {
         res.status(500).send({ err: 'Failed to get meetings' })
     }
 }
+async function getOccupations(req: Request, res: Response) {
+    const { month, year } = req.params
+    try {
+        const occupations = await meetingService.getOccupations(month, year)
+        res.send(occupations)
+    } catch (err) {
+        res.status(500).send({ err: 'Failed to get occupations' })
+    }
+}
 
 async function getMeeting(req: Request, res: Response) {
     try {
@@ -47,5 +56,6 @@ module.exports = {
     getMeetings,
     getMeeting,
     updateMeeting,
-    saveMeeting
+    saveMeeting,
+    getOccupations
 }

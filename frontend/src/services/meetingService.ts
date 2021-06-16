@@ -2,7 +2,7 @@ import { Meeting } from '../interfaces/entities'
 import { httpService } from './httpService';
 export const meetingService = {
     query,
-    getById,
+    getMeetingById,
     getEmptyMeeting,
     updateMeeting,
     addMeeting,
@@ -18,7 +18,7 @@ async function query(date: string): Promise<Meeting[]> {
         throw err
     }
 }
-async function getById(id: string): Promise<Meeting> {
+async function getMeetingById(id: string): Promise<Meeting> {
     try {
         const meeting = await httpService.get(`meeting/${id}`)
         return meeting
@@ -34,6 +34,7 @@ function getEmptyMeeting(): Meeting {
         endDate: null,
         createdBy: '',
         desc: '',
+        occupationHours: [],
     }
 }
 
@@ -48,7 +49,7 @@ async function updateMeeting(meeting: Meeting) {
 }
 async function addMeeting(meeting: Meeting) {
     try {
-        const newMeeting = await httpService.post(`meeting`, meeting)
+        const newMeeting = await httpService.post('meeting', meeting)
         return newMeeting
     } catch (err) {
         console.log(err);
@@ -56,9 +57,9 @@ async function addMeeting(meeting: Meeting) {
     }
 }
 
-async function getOccupations(year: string | number) {
+async function getOccupations(date: string) {
     try {
-        const occupations = await httpService.get(`occupation/${year}`)
+        const occupations = await httpService.get(`meeting/occupation/${date}`)
         return occupations
     } catch (err) {
         console.log(err);

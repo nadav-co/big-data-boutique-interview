@@ -8,4 +8,6 @@ export interface Meeting {
     endDate: Date,
     createdBy: string,
     desc: string,
+    occupationHours: number[],
+    indexDate?: string
 }

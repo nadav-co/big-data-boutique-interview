@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Meeting } from "../interfaces/entities";
-import { utilService } from "../services/utilService";
+import { utils } from "../services/utils";
 import { MeetingPreview } from "./MeetingPreview";
 import { getMeetings, setMeetingToEdit } from "../store/actions/meetingActions";
 import { RootState } from "../interfaces/state";
@@ -37,7 +37,7 @@ export function MeetingList() {
 
     const filterMeetings = () => {
         const filtered = meetings?.filter(m => (new Date(m.startDate).getDate() === date.getDate()))
-        setFIlteredMeetings(filtered)
+        setFIlteredMeetings(filtered.sort((a, b) => new Date(a.startDate).getHours() - new Date(b.startDate).getHours()))
     }
 
     return (
@@ -64,7 +64,7 @@ export function MeetingList() {
             {(filteredMeetings?.length) ?
                 <section className="meetings-container">
                     {filteredMeetings.map((meeting: Meeting) => (
-                        <div key={utilService.makeId()} onClick={() => dispatch(setMeetingToEdit(meeting._id))}>
+                        <div key={utils.makeId()} onClick={() => dispatch(setMeetingToEdit(meeting._id))}>
                             <MeetingPreview meeting={meeting} />
                         </div>
                     ))}

@@ -61,9 +61,33 @@ function getMeetings(req, res) {
         });
     });
 }
+function getOccupations(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, month, year, occupations, err_2;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = req.params, month = _a.month, year = _a.year;
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, meeting_service_1.meetingService.getOccupations(month, year)];
+                case 2:
+                    occupations = _b.sent();
+                    res.send(occupations);
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_2 = _b.sent();
+                    res.status(500).send({ err: 'Failed to get occupations' });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
 function getMeeting(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var meeting, err_2;
+        var meeting, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -74,7 +98,7 @@ function getMeeting(req, res) {
                     res.send(meeting);
                     return [3 /*break*/, 3];
                 case 2:
-                    err_2 = _a.sent();
+                    err_3 = _a.sent();
                     res.status(500).send({ err: 'Failed to get meeting' });
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -84,35 +108,13 @@ function getMeeting(req, res) {
 }
 function saveMeeting(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var meeting, savedMeeting, err_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    meeting = req.body;
-                    return [4 /*yield*/, meeting_service_1.meetingService.save(meeting)];
-                case 1:
-                    savedMeeting = _a.sent();
-                    res.send(savedMeeting);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_3 = _a.sent();
-                    res.status(500).send({ err: 'Failed update add meeting' });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
-function updateMeeting(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
         var meeting, savedMeeting, err_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     meeting = req.body;
-                    return [4 /*yield*/, meeting_service_1.meetingService.update(meeting)];
+                    return [4 /*yield*/, meeting_service_1.meetingService.save(meeting)];
                 case 1:
                     savedMeeting = _a.sent();
                     res.send(savedMeeting);
@@ -126,9 +128,32 @@ function updateMeeting(req, res) {
         });
     });
 }
+function updateMeeting(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var meeting, savedMeeting, err_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    meeting = req.body;
+                    return [4 /*yield*/, meeting_service_1.meetingService.update(meeting)];
+                case 1:
+                    savedMeeting = _a.sent();
+                    res.send(savedMeeting);
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_5 = _a.sent();
+                    res.status(500).send({ err: 'Failed update add meeting' });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 module.exports = {
     getMeetings: getMeetings,
     getMeeting: getMeeting,
     updateMeeting: updateMeeting,
-    saveMeeting: saveMeeting
+    saveMeeting: saveMeeting,
+    getOccupations: getOccupations
 };

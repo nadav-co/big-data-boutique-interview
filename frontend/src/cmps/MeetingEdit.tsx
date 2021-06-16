@@ -1,7 +1,7 @@
 import { Manager } from "../interfaces/entities"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { utilService } from "../services/utilService";
+import { utils } from "../services/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../interfaces/state";
 import { useEffect, useState } from "react";
@@ -18,12 +18,11 @@ export function MeetingEdit() {
     const [selfOccupation, setSelfOccupation] = useState([])
     const [msg, setMsg] = useState('')
 
-    const emptyMeeting = { ...meetingService.getEmptyMeeting(), createdBy: managers[0] }
-
+    
     useEffect(() => {
         setEmptyMeeting()
     }, [managers])
-
+    
     useEffect(() => {
         if (meetingToEdit) {
             const startDate = new Date(meetingToEdit.startDate)
@@ -35,8 +34,9 @@ export function MeetingEdit() {
             } else setSelfOccupation([])
         }
     }, [meetingToEdit])
-
+    
     const setEmptyMeeting = () => {
+        const emptyMeeting = { ...meetingService.getEmptyMeeting(), createdBy: managers[0] }
         dispatch({ type: 'SET_MEETING_TO_EDIT', meetingToEdit: { ...emptyMeeting } })
     }
 
@@ -73,8 +73,8 @@ export function MeetingEdit() {
 
     const saveDate = (dateToSave: Date | [Date, Date], name: string) => {
         const date = new Date(dateToSave.toLocaleString())
-        if (date.getFullYear() !== occupationsByDate.year) {
-            dispatch(getOccupations(date.getFullYear()))
+        if (date.getMonth() !== +occupationsByDate.month) {
+            dispatch(getOccupations(date.toLocaleDateString()))
         }
         setMeeting({ ...meeting, [name]: date })
     }
@@ -109,7 +109,7 @@ export function MeetingEdit() {
                     Manager:
                     <br />
                     <select name="createdBy" onInput={handleFormChange} value={JSON.stringify(meeting.createdBy)}>
-                        {managers.map((manager: Manager) => <option key={utilService.makeId()} value={JSON.stringify(manager)}>{manager.fullname}</option>)}
+                        {managers.map((manager: Manager) => <option key={utils.makeId()} value={JSON.stringify(manager)}>{manager.fullname}</option>)}
                     </select>
                 </label>
                 <label>

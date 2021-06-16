@@ -33,11 +33,8 @@ async function ajax(endpoint, method = 'get', data = null) {
         })
         return res.data
     } catch (err) {
-        console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${JSON.stringify(data)}`)
+        (process.env.NODE_ENV !== 'production') && console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${JSON.stringify(data)}`)
         console.dir(err)
-        if (err.response && err.response.status === 401) {
-            window.location.assign('/#/login')
-        }
         throw err
     }
 }

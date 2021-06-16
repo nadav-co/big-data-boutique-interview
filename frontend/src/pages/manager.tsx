@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { ManagerEdit } from "../cmps/ManagerEdit"
 import { RootState } from "../interfaces/state"
-import { utilService } from "../services/utilService"
+import { utils } from "../services/utils"
 
 
 export function Manager() {
@@ -13,9 +13,9 @@ export function Manager() {
             <section className="managers-container flex col center">
 
                 {managers.map(manager => (
-                    <ManagerEdit key={utilService.makeId()} manager={manager} />
+                    <ManagerEdit key={utils.makeId()} manager={manager} />
                 ))}
-                <ManagerEdit key={utilService.makeId()} manager={{ fullname: '' }} />
+                <ManagerEdit key={utils.makeId()} manager={{ fullname: '' }} />
             </section>
         </main>
     )

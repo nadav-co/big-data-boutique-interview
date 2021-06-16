@@ -48,18 +48,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.meetingService = void 0;
-var occupation_service_1 = require("../occupation/occupation.service");
 var dbService = require('../../services/db.service');
 var ObjectId = require('mongodb').ObjectId;
 exports.meetingService = {
     query: query,
     getById: getById,
     update: update,
-    save: save
+    save: save,
+    getOccupations: getOccupations
 };
 function query(month, year) {
     return __awaiter(this, void 0, void 0, function () {
-        var collection, regex, meetings, err_1;
+        var collection, date, meetings, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -67,8 +67,8 @@ function query(month, year) {
                     return [4 /*yield*/, dbService.getCollection('meeting')];
                 case 1:
                     collection = _a.sent();
-                    regex = "^" + year + "-" + month.padStart(2, '0');
-                    return [4 /*yield*/, collection.find({ 'startDate': { $regex: regex } }).toArray()];
+                    date = year + "-" + (+month - 1);
+                    return [4 /*yield*/, collection.find({ 'indexDate': date }).toArray()];
                 case 2:
                     meetings = _a.sent();
                     return [2 /*return*/, meetings];
@@ -80,9 +80,37 @@ function query(month, year) {
         });
     });
 }
+function getOccupations(month, year) {
+    return __awaiter(this, void 0, void 0, function () {
+        var meetings, occupationsByDate_1, err_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, query(month, year)];
+                case 1:
+                    meetings = _a.sent();
+                    occupationsByDate_1 = { month: +month - 1 };
+                    console.log(meetings);
+                    meetings.forEach(function (meeting) {
+                        var _a;
+                        var start = new Date(meeting.startDate);
+                        ((_a = occupationsByDate_1[start.getMonth() + "-" + start.getDate()]) === null || _a === void 0 ? void 0 : _a.push.apply(_a, meeting.occupationHours)) ||
+                            (occupationsByDate_1[start.getMonth() + "-" + start.getDate()] = meeting.occupationHours);
+                    });
+                    console.log(occupationsByDate_1);
+                    return [2 /*return*/, occupationsByDate_1];
+                case 2:
+                    err_2 = _a.sent();
+                    throw err_2;
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 function getById(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var collection, meeting, err_2;
+        var collection, meeting, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -95,9 +123,9 @@ function getById(id) {
                     meeting = _a.sent();
                     return [2 /*return*/, meeting];
                 case 3:
-                    err_2 = _a.sent();
-                    console.log(err_2);
-                    throw err_2;
+                    err_3 = _a.sent();
+                    console.log(err_3);
+                    throw err_3;
                 case 4: return [2 /*return*/];
             }
         });
@@ -105,51 +133,88 @@ function getById(id) {
 }
 function save(meetingToSave) {
     return __awaiter(this, void 0, void 0, function () {
-        var collection, meeting, err_3;
+        var newMeeting, collection, res, err_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 4, , 5]);
-                    return [4 /*yield*/, occupation_service_1.occupationService.save(meetingToSave)];
+                    return [4 /*yield*/, _checkAndModifyMeeting(__assign({}, meetingToSave))];
                 case 1:
-                    _a.sent();
+                    newMeeting = _a.sent();
                     return [4 /*yield*/, dbService.getCollection('meeting')];
                 case 2:
                     collection = _a.sent();
-                    return [4 /*yield*/, collection.insertOne(__assign({}, meetingToSave))];
+                    return [4 /*yield*/, collection.insertOne(__assign({}, newMeeting))];
                 case 3:
-                    meeting = _a.sent();
-                    return [2 /*return*/, meeting.ops[0]];
+                    res = _a.sent();
+                    return [2 /*return*/, res.ops[0]];
                 case 4:
-                    err_3 = _a.sent();
-                    throw err_3;
+                    err_4 = _a.sent();
+                    throw err_4;
                 case 5: return [2 /*return*/];
             }
         });
     });
 }
-function update(meeting) {
+function update(meetingToUpdate) {
     return __awaiter(this, void 0, void 0, function () {
-        var collection, err_4;
+        var newMeeting, collection, res, err_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 4, , 5]);
-                    return [4 /*yield*/, occupation_service_1.occupationService.save(meeting)];
+                    return [4 /*yield*/, _checkAndModifyMeeting(__assign({}, meetingToUpdate))];
                 case 1:
-                    _a.sent();
-                    meeting._id = ObjectId(meeting._id);
+                    newMeeting = _a.sent();
+                    newMeeting._id = ObjectId(newMeeting._id);
                     return [4 /*yield*/, dbService.getCollection('meeting')];
                 case 2:
                     collection = _a.sent();
-                    return [4 /*yield*/, collection.updateOne({ "_id": ObjectId(meeting._id) }, { $set: meeting })];
+                    return [4 /*yield*/, collection.replaceOne({ "_id": ObjectId(newMeeting._id) }, { $set: newMeeting })];
                 case 3:
-                    _a.sent();
-                    return [2 /*return*/, meeting];
+                    res = _a.sent();
+                    console.log(res);
+                    return [2 /*return*/, newMeeting];
                 case 4:
-                    err_4 = _a.sent();
-                    throw err_4;
+                    err_5 = _a.sent();
+                    throw err_5;
                 case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function _checkAndModifyMeeting(meeting) {
+    return __awaiter(this, void 0, void 0, function () {
+        var start, end, occupationHours, occupationsByDate, oldMeeting, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    start = meeting.startDate = new Date(meeting.startDate);
+                    end = meeting.endDate = new Date(meeting.endDate);
+                    occupationHours = new Array(end.getHours() - start.getHours()).fill('').map(function (a, idx) { return start.getHours() + idx; });
+                    return [4 /*yield*/, getOccupations(start.getMonth().toString(), start.getFullYear().toString())];
+                case 1:
+                    occupationsByDate = _b.sent();
+                    if (!(meeting._id)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, getById(meeting._id)];
+                case 2:
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    _a = null;
+                    _b.label = 4;
+                case 4:
+                    oldMeeting = _a;
+                    occupationHours.forEach(function (hour) {
+                        var _a;
+                        if (((_a = occupationsByDate[start.getMonth() + "-" + start.getDate()]) === null || _a === void 0 ? void 0 : _a.includes(hour)) &&
+                            !(oldMeeting === null || oldMeeting === void 0 ? void 0 : oldMeeting.occupationHours.includes(hour)))
+                            throw new Error('Invalid time');
+                        return;
+                    });
+                    meeting.occupationHours = occupationHours;
+                    meeting.indexDate = start.getFullYear() + "-" + start.getMonth();
+                    return [2 /*return*/, __assign({}, meeting)];
             }
         });
     });
