@@ -91,14 +91,12 @@ function getOccupations(month, year) {
                 case 1:
                     meetings = _a.sent();
                     occupationsByDate_1 = { month: +month - 1 };
-                    console.log(meetings);
                     meetings.forEach(function (meeting) {
                         var _a;
                         var start = new Date(meeting.startDate);
                         ((_a = occupationsByDate_1[start.getMonth() + "-" + start.getDate()]) === null || _a === void 0 ? void 0 : _a.push.apply(_a, meeting.occupationHours)) ||
                             (occupationsByDate_1[start.getMonth() + "-" + start.getDate()] = meeting.occupationHours);
                     });
-                    console.log(occupationsByDate_1);
                     return [2 /*return*/, occupationsByDate_1];
                 case 2:
                     err_2 = _a.sent();
@@ -158,7 +156,7 @@ function save(meetingToSave) {
 }
 function update(meetingToUpdate) {
     return __awaiter(this, void 0, void 0, function () {
-        var newMeeting, collection, res, err_5;
+        var newMeeting, collection, err_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -172,8 +170,7 @@ function update(meetingToUpdate) {
                     collection = _a.sent();
                     return [4 /*yield*/, collection.replaceOne({ "_id": ObjectId(newMeeting._id) }, { $set: newMeeting })];
                 case 3:
-                    res = _a.sent();
-                    console.log(res);
+                    _a.sent();
                     return [2 /*return*/, newMeeting];
                 case 4:
                     err_5 = _a.sent();

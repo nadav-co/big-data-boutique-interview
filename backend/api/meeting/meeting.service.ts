@@ -35,14 +35,12 @@ async function getOccupations(month: string, year: string) {
     try {
         const meetings = await query(month, year)
         const occupationsByDate: any = { month: +month - 1 }
-        console.log(meetings);
         
         meetings.forEach((meeting: Meeting) => {
             const start = new Date(meeting.startDate)
             occupationsByDate[`${start.getMonth()}-${start.getDate()}`]?.push(...meeting.occupationHours) ||
             (occupationsByDate[`${start.getMonth()}-${start.getDate()}`] = meeting.occupationHours)
         })
-        console.log(occupationsByDate);
         return occupationsByDate
     } catch (err) {
         throw err
@@ -78,9 +76,7 @@ async function update(meetingToUpdate: Meeting) {
         const newMeeting = await _checkAndModifyMeeting({...meetingToUpdate})
         newMeeting._id = ObjectId(newMeeting._id);
         const collection = await dbService.getCollection('meeting')
-        const res = await collection.replaceOne({ "_id": ObjectId(newMeeting._id) }, { $set: newMeeting })
-        console.log(res);
-        
+        await collection.replaceOne({ "_id": ObjectId(newMeeting._id) }, { $set: newMeeting })
         return newMeeting
     } catch (err) {
         throw err
