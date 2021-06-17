@@ -2,6 +2,7 @@ import { meetingService } from './meeting.service'
 import { Request, Response } from "express";
 
 async function getMeetings(req: Request, res: Response) {
+    
     const { month, year } = req.params
     try {
         const meetings = await meetingService.query(month, year)
@@ -37,18 +38,19 @@ async function saveMeeting(req: Request, res: Response) {
         res.send(savedMeeting)
 
     } catch (err) {
-        res.status(500).send({ err: 'Failed update add meeting' })
+        res.status(500).send({ err: 'Failed save add meeting' })
     }
 }
 
 async function updateMeeting(req: Request, res: Response) {
+    
     try {
         const meeting = req.body
         const savedMeeting = await meetingService.update(meeting)
         res.send(savedMeeting)
 
     } catch (err) {
-        res.status(500).send({ err: 'Failed update add meeting' })
+        res.status(500).send(err)
     }
 }
 

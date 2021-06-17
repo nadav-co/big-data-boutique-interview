@@ -1,10 +1,11 @@
 import { Meeting } from "../../interfaces/entities"
 import { meetingService } from "../../services/meetingService"
 
-export function getMeetings(date: string) {
+export function getMeetings(date: Date) {
   return async (dispatch: any) => {
     try {
-      const meetings = await meetingService.query(date)
+      const queryDate = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}` 
+      const meetings = await meetingService.query(queryDate)
       dispatch({ type: 'SET_MEETINGS', meetings })
       return meetings
     }
@@ -49,15 +50,16 @@ export function saveMeeting(newMeeting: Meeting) {
   }
 }
 
-export function getOccupations(date: string) {
+export function getOccupations(date: Date) {
   return async (dispatch: any) => {
     try {
-      const occupations = await meetingService.getOccupations(date)
+      const queryDate = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}` 
+      const occupations = await meetingService.getOccupations(queryDate)
       dispatch({ type: 'SET_OCCUPATIONS', occupations })
       return occupations
     }
     catch (err) {
-      console.log('err in getMeetingById', err)
+      console.log('err in get occupations', err)
     }
   }
 }

@@ -17,9 +17,8 @@ export function MeetingEdit() {
     const [meeting, setMeeting] = useState(null)
     const [selfOccupation, setSelfOccupation] = useState([])
     const [msg, setMsg] = useState('')
-
+    
     const GMTOffSet = (process.env.NODE_ENV === 'production') ? new Date().getTimezoneOffset()/ 60 : 0
-
     
     useEffect(() => {
         setEmptyMeeting()
@@ -64,7 +63,7 @@ export function MeetingEdit() {
 
     const isOccHours = (time: Date, hour: number, diff: number = 0) => {
         if (selfOccupation.includes(hour - diff)) return true
-        return (occupationsByDate[`${time.getMonth()}-${time.getDate()}`]?.includes(hour - diff  + GMTOffSet)) ? false : true
+        return (occupationsByDate[`${time.getMonth()}-${time.getDate()}`]?.includes(hour - diff + GMTOffSet)) ? false : true
     }
 
     const handleFormChange = ({ target }: any) => {
@@ -75,7 +74,7 @@ export function MeetingEdit() {
 
     const saveDate = (date: any, name: string) => {
         if (date.getMonth() !== +occupationsByDate.month) {
-            dispatch(getOccupations(date.toLocaleDateString()))
+            dispatch(getOccupations(date))
         }
         setMeeting({ ...meeting, [name]: date })
     }

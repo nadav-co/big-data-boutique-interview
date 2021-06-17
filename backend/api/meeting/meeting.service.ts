@@ -20,9 +20,10 @@ export const meetingService = {
 }
 
 async function query(month: string, year: string) {
+    
     try {
         const collection = await dbService.getCollection('meeting')
-        const date = `${year}-${+month - 1}`
+        const date = `${year}-${month}`
         var meetings = await collection.find({ 'indexDate': date }).toArray()
         return meetings
     } catch (err) {
@@ -34,7 +35,7 @@ async function query(month: string, year: string) {
 async function getOccupations(month: string, year: string) {
     try {
         const meetings = await query(month, year)
-        const occupationsByDate: any = { month: +month - 1 }
+        const occupationsByDate: any = { month }
         
         meetings.forEach((meeting: Meeting) => {
             const start = new Date(meeting.startDate)

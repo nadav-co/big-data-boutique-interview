@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient
 
 var dbURL: string
-(process.env.NODE_ENV === 'production') ? dbURL = 'mongodb+srv://theUser:thePass@cluster0-klgzh.mongodb.net/test?retryWrites=true&w=majority' : dbURL = 'mongodb://localhost:27017'
+(process.env.NODE_ENV === 'production') ? dbURL = 'mongodb+srv://nadav:b3NyL28eIa6QifCD@cluster0.yfzqr.mongodb.net/BIGDATA_BOUTIQUE?retryWrites=true&w=majority' : dbURL = 'mongodb://localhost:27017'
 
 module.exports = {
     getCollection

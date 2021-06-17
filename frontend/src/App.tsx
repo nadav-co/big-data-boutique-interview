@@ -13,7 +13,7 @@ export function App() {
 
   useEffect(() => {
     dispatch(getManagers())
-    dispatch(getOccupations(new Date().toLocaleDateString()))
+    dispatch(getOccupations(new Date()))
   }, [dispatch])
 
   return (

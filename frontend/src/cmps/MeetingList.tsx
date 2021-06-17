@@ -19,18 +19,17 @@ export function MeetingList() {
     }, [])
 
     useEffect(() => {
-        const dateParams = new Date().toLocaleString().split(',')[0]
-        dispatch(getMeetings(dateParams))
+        const date = new Date()
+        dispatch(getMeetings(date))
     }, [dispatch])
-
+    
     useEffect(() => {
         date && filterMeetings()
     }, [date, meetings])
-
+    
     const onSetDate = (newDate: any) => {
         if (date.getMonth() !== newDate.getMonth()) {
-            const dateParams = newDate.toLocaleString().split(',')[0]
-            dispatch(getMeetings(dateParams))
+            dispatch(getMeetings(new Date(newDate)))
         }
         setDate(newDate)
     }
